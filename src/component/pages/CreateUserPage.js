@@ -3,8 +3,16 @@ import { TextInput, PasswordInput, Tooltip, Center, Text, Button } from '@mantin
 import { InfoCircle } from 'tabler-icons-react';
 import Layout from '../Layout';
 
+// const publishProductFormInitialState = {
+//   title: '',
+//   description: '',
+//   brand: '',
+//   price: '',
+//   image: '',
+// };
+
 function TooltipFirstName() {
-    const rightSection = (
+    const firstName = (
       <Tooltip
         label="We store your data securely"
         placement="end"
@@ -21,7 +29,7 @@ function TooltipFirstName() {
   
     return (
       <TextInput
-        rightSection={rightSection}
+        rightSection={firstName}
         label="First Name"
         placeholder="First Name"
       />
@@ -29,7 +37,7 @@ function TooltipFirstName() {
   }
 
   function TooltipLastName() {
-    const rightSection = (
+    const lastName = (
       <Tooltip
         label="We store your data securely"
         placement="end"
@@ -46,7 +54,7 @@ function TooltipFirstName() {
   
     return (
       <TextInput
-        rightSection={rightSection}
+        rightSection={lastName}
         label="Last Name"
         placeholder="Last Name"
       />
@@ -54,7 +62,7 @@ function TooltipFirstName() {
   }
 
 function TooltipEmail() {
-  const rightSection = (
+  const email = (
     <Tooltip
       label="We store your data securely"
       placement="end"
@@ -71,7 +79,7 @@ function TooltipEmail() {
 
   return (
     <TextInput
-      rightSection={rightSection}
+      rightSection={email}
       label="Email"
       placeholder="Email"
     />
@@ -82,6 +90,7 @@ function TooltipPassword() {
   const [opened, setOpened] = useState(false);
   const [value, setValue] = useState('');
   const valid = value.trim().length >= 6;
+
   return (
     <Tooltip
       label={valid ? 'All good!' : 'Password must include at least 6 characters'}
