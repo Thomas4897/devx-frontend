@@ -7,6 +7,7 @@ import {
   Home2,
 } from 'tabler-icons-react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../redux/userState'
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef('icon');
@@ -80,6 +81,7 @@ const data = [
 ];
 
 export default function AppShell() {
+  const { user, logOut } = useUser();
   const navigate = useNavigate();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState('Billing');
@@ -101,7 +103,7 @@ export default function AppShell() {
   ));
 
   return (
-    <Navbar height="100vh" width={{ sm: 300 }} p="md">
+    <Navbar style={{}} height="100vh" width={{ sm: 300 }} p="md">
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           DevX
@@ -119,6 +121,7 @@ export default function AppShell() {
         <a href="#" className={classes.link} 
         onClick={(event) => {
           event.preventDefault()
+          logOut();
           navigate('/')
           }}>
           <Logout className={classes.linkIcon} />

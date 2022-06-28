@@ -12,11 +12,11 @@ import {
   Anchor,
 } from '@mantine/core';
 import Layout from '../Layout';
+import { useUser } from '../../redux/userState'
 const axios = require('axios').default;
-// const bcrypt = require('bcryptjs');
-// import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 
 export default function LoginPage2(props) {
+  const { user, logIn } = useUser();
   const [type, toggle] = useToggle('login', ['login', 'register']);
   const form = useForm({
     initialValues: {
@@ -27,6 +27,7 @@ export default function LoginPage2(props) {
       terms: true,
     },
 
+
     validationRules: {
       email: (val) => /^\S+@\S+$/.test(val),
       password: (val) => val.length >= 6,
@@ -34,12 +35,16 @@ export default function LoginPage2(props) {
   });
 
   const onSubmitLogin = async () => {
-    const response = axios.get(`http://localhost:4000/users/get-user/${form.values.email}/${form.values.password}`,
-    ).then((response) => {
-      console.log(response.data)
-      return response.data;
-    });
-    return response;
+    axios.post('http://localhost:4000/users/sign-in', { credentials: { email: form.values.email, password: form.values.password } })
+      .then((response) => {
+        // Put the resulting user data in react context over the entire application
+        // That it can be accessed from any component in the component tree.
+        logIn(response.data);
+        console.log('user logged in');
+      }).catch((error) => {
+        console.log('Unable to log in.');
+        console.log('error:', error);
+      });
   };
 
   const onSubmitRegister = async () => {
@@ -50,7 +55,6 @@ export default function LoginPage2(props) {
       password: form.values.password
     })
       .then((response) => {
-        console.log(response.data)
         return response.data;
       });
     return response;
@@ -61,8 +65,11 @@ export default function LoginPage2(props) {
       <Paper radius="md" p="xl" withBorder {...props}>
         <Text size="lg" weight={500}>
           Welcome to DevX, {type} with
-        </Text>
 
+        </Text>
+        <Group>
+          <div>Hello, {user ? user.firstName : "Guest"}</div>
+        </Group>
         <Group grow mb="md" mt="md">
           <Button radius="xl">Google</Button>
           <Button radius="xl">Twitter</Button>
@@ -71,7 +78,7 @@ export default function LoginPage2(props) {
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
         <form
-        onSubmit={form.onSubmit(type === "login" ? onSubmitLogin : onSubmitRegister)}
+          onSubmit={form.onSubmit(type === "login" ? onSubmitLogin : onSubmitRegister)}
         >
           <Group direction="column" grow>
             {type === 'register' && (
