@@ -28,6 +28,7 @@ export default function LoginPage2(props) {
       lastName: '',
       email: '',
       password: '',
+      image: '',
       terms: true,
     },
 
@@ -49,7 +50,7 @@ export default function LoginPage2(props) {
       .then((response) => {
         // Put the resulting user data in react context over the entire application
         // That it can be accessed from any component in the component tree.
-        console.log('login:', response.data)
+        // console.log('login:', response.data)
         logIn(response.data);
         navigate("/user-page");
         console.log('user logged in.');
@@ -63,8 +64,11 @@ export default function LoginPage2(props) {
     const response = APIaxios.post(`/users/create-user`, {
       firstName: form.values.firstName,
       lastName: form.values.lastName,
+      image: form.values.image.length > 0 ? form.values.image : "none",
       email: form.values.email,
-      password: form.values.password
+      password: form.values.password,
+      authorName: form.values.firstName + " " + form.values.lastName,
+      authorImage: form.values.image.length > 0 ? form.values.image : "none"
     })
       .then((response) => {
         console.log('New user successfully created', response.data);
@@ -114,6 +118,18 @@ export default function LoginPage2(props) {
                 autoComplete='lastName'
                 value={form.values.lastName}
                 onChange={(event) => form.setFieldValue('lastName', event.currentTarget.value)}
+              />
+            )}
+
+            {type === 'register' && (
+              <TextInput
+                // required
+                label="Profile Image"
+                placeholder="Profile Image"
+                autoComplete='authorImage'
+                value={form.values.image}
+                onChange={(event) => form.setFieldValue('image', event.currentTarget.value)}
+              // error={form.errors.email && 'Invalid email'}
               />
             )}
 

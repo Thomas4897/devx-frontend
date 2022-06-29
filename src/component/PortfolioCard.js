@@ -53,11 +53,12 @@ export default function PortfolioCard(props) {
     author,
     rating,
   } = props.exampleCard;
+  const authorImage = props.image
   const linkProps = { href: link, target: '_blank', rel: 'noopener noreferrer' };
 
 
   return (
-    <Card style={{border: "1px solid gray", maxWidth: "400px"}}  radius="md" className={cx(classes.card, className)} >
+    <Card style={{border: "1px solid gray", display: "flex", flexDirection: "column", height: "500px", maxWidth: "400px"}}  radius="md" className={cx(classes.card, className)} >
       <Card.Section>
         <a {...linkProps}>
           <Image src={image} height={300} />
@@ -76,9 +77,9 @@ export default function PortfolioCard(props) {
         {description}
       </Text>
 
-      <Group position="apart" className={classes.footer}>
+      <Group style={{ flex: "1", alignItems: "flex-end"}} position="apart" className={classes.footer}>
         <Center>
-          <Avatar src={author.authorImage ? author.authorImage : {UserCircle}} size={24} radius="xl" mr="xs" />
+          <Avatar src={authorImage ? authorImage : UserCircle} size={24} radius="xl" mr="xs" />
           <Text size="sm" inline>
             {author.authorName} 
           </Text>

@@ -1,145 +1,110 @@
 import React from 'react';
-import { useForm, useToggle, upperFirst } from '@mantine/hooks';
+import { useForm } from '@mantine/hooks';
 import {
   TextInput,
-  PasswordInput,
   Text,
   Paper,
   Group,
   Button,
   Divider,
-  Checkbox,
-  Anchor,
 } from '@mantine/core';
 import Layout from '../Layout';
 import { useUser } from '../../redux/userState'
 import { useNavigate } from 'react-router-dom';
-
-const axios = require('axios').default;
+import APIaxios from '../../Axios';
 
 export default function AddPortfolioCard(props) {
-  const { user, logIn } = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
-  const [type, toggle] = useToggle('login', ['login', 'register']);
   const form = useForm({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      terms: true,
-    },
-
-
-    validationRules: {
-      email: (val) => /^\S+@\S+$/.test(val),
-      password: (val) => val.length >= 6,
+      image: '',
+      link: '',
+      title: '',
+      description: '',
     },
   });
 
-  const onSubmitLogin = async () => {
-    axios.post('http://localhost:4000/users/sign-in', { credentials: { email: form.values.email, password: form.values.password } })
+  const onSubmitPortfolioCard = async () => {
+    const response = APIaxios.post(`/portfolioItems/create-portfolio-item`,
+      {
+        userId: user.id,
+        portfolioItem: {
+          image: form.values.image,
+          link: form.values.link,
+          title: form.values.title,
+          description: form.values.description,
+        }
+      })
       .then((response) => {
-        // Put the resulting user data in react context over the entire application
-        // That it can be accessed from any component in the component tree.
-        logIn(response.data);
-        navigate("/user-page");
-        console.log('user logged in');
+        console.log('New portfolio card successfully created', response.data);
+        navigate("/user-page")
       }).catch((error) => {
-        console.log('Unable to log in.');
+        console.log('Unable to create new portfolio card.');
         console.log('error:', error);
-      });
-  };
-
-  const onSubmitRegister = async () => {
-    const response = axios.post(`http://localhost:4000/users/create-user`, {
-      firstName: form.values.firstName,
-      lastName: form.values.lastName,
-      email: form.values.email,
-      password: form.values.password
-    })
-      .then((response) => {
-        console.log('New user successfully created', response.data);
-        toggle("login");
       });
     return response;
   };
 
   return (
     <Layout>
-      <Paper style={{width: "400px"}} radius="md" p="xl" withBorder {...props}>
-        <Text size="lg" weight={500}>
-          Add Portfolio Card
-        </Text>
+      <Paper style={{ width: "400px" }} radius="md" p="xl" withBorder {...props}>
         <Group>
           <div>Hello, {user ? user.firstName : "Guest"}</div>
         </Group>
+        <Text size="lg" weight={500}>
+          Add Portfolio Card
+        </Text>
 
-        <Divider label="Or continue with email" labelPosition="center" my="lg" />
+        <Divider label="" labelPosition="center" my="lg" />
 
         <form
-          onSubmit={form.onSubmit(type === "login" ? onSubmitLogin : onSubmitRegister)}
+          onSubmit={form.onSubmit(onSubmitPortfolioCard)}
         >
           <Group direction="column" grow>
-            {type === 'register' && (
-              <TextInput
-                label="First Name"
-                placeholder="First Name"
-                autoComplete='firstName'
-                value={form.values.firstName}
-                onChange={(event) => form.setFieldValue('firstName', event.currentTarget.value)}
-              />
-            )}
-
-
-            {type === 'register' && (
-              <TextInput
-                label="Last Name"
-                placeholder="Last Name"
-                autoComplete='lastName'
-                value={form.values.lastName}
-                onChange={(event) => form.setFieldValue('lastName', event.currentTarget.value)}
-              />
-            )}
 
             <TextInput
               required
-              label="Email"
-              placeholder="hello@mantine.dev"
-              autoComplete='userName'
-              value={form.values.email}
-              onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-              error={form.errors.email && 'Invalid email'}
+              label="Image Address"
+              placeholder="Image Address"
+              autoComplete='imageAdress'
+              value={form.values.image}
+              onChange={(event) => form.setFieldValue('image', event.currentTarget.value)}
             />
 
-            <PasswordInput
+            <TextInput
               required
-              label="Password"
-              placeholder="Your password"
-              autoComplete='new-password'
-              value={form.values.password}
-              onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-              error={form.errors.password && 'Password should include at least 6 characters'}
+              label="Project Link"
+              placeholder="Project Link"
+              autoComplete='link'
+              value={form.values.link}
+              onChange={(event) => form.setFieldValue('link', event.currentTarget.value)}
             />
 
-            {type === 'register' && (
-              <Checkbox
-                label="I accept terms and conditions"
-                checked={form.values.terms}
-                onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-              />
-            )}
+            <TextInput
+              required
+              label="Title"
+              placeholder="Title"
+              autoComplete='title'
+              value={form.values.title}
+              onChange={(event) => form.setFieldValue('title', event.currentTarget.value)}
+            // error={form.errors.email && 'Invalid email'}
+            />
+
+            <TextInput
+              required
+              label="Description"
+              placeholder="Description"
+              autoComplete='description'
+              value={form.values.description}
+              onChange={(event) => form.setFieldValue('description', event.currentTarget.value)}
+            // error={form.errors.password && 'Password should include at least 6 characters'}
+            />
           </Group>
 
-          <Group position="apart" mt="xl">
-            <Anchor component="button" type="button" color="gray" onClick={() => toggle()} size="xs">
-              {type === 'register'
-                ? 'Already have an account? Login'
-                : "Don't have an account? Register"}
-            </Anchor>
+          <Group position="center" mt="xl">
             <Button type="submit" onClick={async () => {
-              // type === "login" ? onSubmitLogin() : onSubmitRegister()
-            }}>{upperFirst(type)}</Button>
+            }}>Create New Portfolio Card</Button>
           </Group>
         </form>
       </Paper>

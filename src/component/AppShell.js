@@ -89,6 +89,7 @@ export default function AppShell() {
   ]
     :
     data = [
+      { link: '/', label: 'Home', icon: Home2 },
       { link: '/login', label: 'Login / Register', icon: UserCircle },
       // { link: '', label: 'SSH Keys', icon: Key },
       // { link: '', label: 'Authentication', icon: TwoFA },
@@ -123,7 +124,7 @@ export default function AppShell() {
   ));
 
   return (
-    <Navbar style={{}} height="100vh" width={{ sm: 300 }} p="md">
+    <Navbar style={{ }} height="100vh" width={{ sm: 300 }} p="md">
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           DevX

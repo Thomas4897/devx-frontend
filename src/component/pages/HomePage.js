@@ -12,7 +12,6 @@ export default function HomePage() {
       () => {
         APIaxios.get('/portfolioItems/get-all-portfolio-items')
           .then((response) => {
-            console.log(response.data); 
             setPortfolioData(response.data);
         })
           .catch((error) => console.log('error: ', error));
@@ -22,12 +21,12 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <Box style={{display: "flex", flexDirection: "column"}}>
+      <Box style={{ display: "flex", flexDirection: "column"}}>
         <Box className="example" style={{height: "100vh", display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", overflow: "scroll"}}>
       {portfolioData.map((e) => {
            return (
-            <Box key={e.id} mt={20} style={{ width: "400px"}} >
-                <PortfolioCard exampleCard={e} />
+            <Box key={e.id} m={10} mt={40} style={{ width: "400px"}} >
+                <PortfolioCard exampleCard={e} image={e.author.authorImage}/>
             </Box>
         )})}
         </Box>

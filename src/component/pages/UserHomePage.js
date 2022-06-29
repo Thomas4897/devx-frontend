@@ -1,4 +1,4 @@
-import { Box, Button } from '@mantine/core'
+import { Box } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import APIaxios from '../../Axios'
 import { useUser } from '../../redux/userState'
@@ -8,13 +8,14 @@ import PortfolioCard from '../PortfolioCard'
 export default function UserHomePage() {
   const { user } = useUser();
   const [portfolioData, setPortfolioData] = useState([]);
+  const [ authorImage, setAuthorImage ] = useState(null)
 
   useEffect(
     () => {
-      APIaxios.post('/portfolioItems/get-user-portfolio-items', { userId: user.id})
+      APIaxios.post('/portfolioItems/get-user-portfolio-items', { userId: user.id })
         .then((response) => {
-          console.log(response.data);
           setPortfolioData(response.data);
+          setAuthorImage(response.data[0].author.authorImage)
         })
         .catch((error) => console.log('error: ', error));
     },
@@ -23,15 +24,15 @@ export default function UserHomePage() {
 
   return (
     <Layout>
-      <Box style={{ display: "flex", flexDirection: "column" }}>
-        {/* <Box mt={50} style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
-          <Button>+ Add Portfolio Card</Button>
-        </Box> */}
+      <Box style={{ display: "flex", flexDirection: "column", height: "100vh", width: "100%"}}>
+        <Box m={20}>
+          <h2>Welcome Back, {user ? user.firstName : ""}!</h2>
+        </Box>
         <Box className="example" style={{ height: "100vh", display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", overflow: "scroll" }}>
           {portfolioData.map((e) => {
             return (
-              <Box key={e.id} mt={20} style={{ width: "400px" }} >
-                <PortfolioCard exampleCard={e} />
+              <Box key={e.id} m={10} mt={40} style={{ width: "400px" }} >
+                <PortfolioCard exampleCard={e} image={authorImage ? authorImage : null}/>
               </Box>
             )
           })}
