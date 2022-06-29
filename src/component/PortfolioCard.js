@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bookmark, Heart, Share } from 'tabler-icons-react';
+import { Heart, UserCircle } from 'tabler-icons-react';
 import {
   Card,
   Image,
@@ -41,30 +41,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-// interface ArticleCardProps {
-//   image: string;
-//   link: string;
-//   title: string;
-//   description: string;
-//   rating: string;
-//   author: {
-//     name: string;
-//     image: string;
-//   };
-// }
-
-// const exampleCard = [{
-//     "image": "https://i.imgur.com/Cij5vdL.png",
-//     "link": "https://mantine.dev/",
-//     "title": "Resident Evil Village review",
-//     "rating": "outstanding",
-//     "description": "Resident Evil Village is a direct sequel to 2017’s Resident Evil 7, but takes a very different direction to its predecessor, namely the fact that this time round instead of fighting against various mutated zombies, you’re now dealing with more occult enemies like werewolves and vampires.",
-//     "author": {
-//       "name": "Bill Wormeater",
-//       "image": "https://images.unsplash.com/photo-1593229874334-90d965f27c42?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-//     }
-//   }]
-
 export default function PortfolioCard(props) {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
@@ -76,13 +52,12 @@ export default function PortfolioCard(props) {
     description,
     author,
     rating,
-    ...others
   } = props.exampleCard;
   const linkProps = { href: link, target: '_blank', rel: 'noopener noreferrer' };
 
 
   return (
-    <Card style={{maxWidth: "400px"}} minwithBorder radius="md" className={cx(classes.card, className)} {...others}>
+    <Card style={{border: "1px solid gray", maxWidth: "400px"}}  radius="md" className={cx(classes.card, className)} >
       <Card.Section>
         <a {...linkProps}>
           <Image src={image} height={300} />
@@ -103,9 +78,9 @@ export default function PortfolioCard(props) {
 
       <Group position="apart" className={classes.footer}>
         <Center>
-          <Avatar src={author.image} size={24} radius="xl" mr="xs" />
+          <Avatar src={author.authorImage ? author.authorImage : {UserCircle}} size={24} radius="xl" mr="xs" />
           <Text size="sm" inline>
-            {author.name}
+            {author.authorName} 
           </Text>
         </Center>
 
@@ -113,12 +88,12 @@ export default function PortfolioCard(props) {
           <ActionIcon className={classes.action} style={{ color: theme.colors.red[6] }}>
             <Heart size={16} />
           </ActionIcon>
-          <ActionIcon className={classes.action} style={{ color: theme.colors.yellow[7] }}>
+          {/* <ActionIcon className={classes.action} style={{ color: theme.colors.yellow[7] }}>
             <Bookmark size={16} />
-          </ActionIcon>
-          <ActionIcon className={classes.action}>
+          </ActionIcon> */}
+          {/* <ActionIcon className={classes.action}>
             <Share size={16} />
-          </ActionIcon>
+          </ActionIcon> */}
         </Group>
       </Group>
     </Card>

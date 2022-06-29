@@ -5,9 +5,13 @@ import {
   SwitchHorizontal,
   Logout,
   Home2,
+  UserCircle,
+  DatabaseImport,
 } from 'tabler-icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../redux/userState'
+import APIaxios from '../Axios';
+import { ButtonToggle } from './ButtonToggle';
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef('icon');
@@ -15,17 +19,15 @@ const useStyles = createStyles((theme, _params, getRef) => {
     header: {
       paddingBottom: theme.spacing.md,
       marginBottom: theme.spacing.md * 1.5,
-      borderBottom: `1px solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-      }`,
+      borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
+        }`,
     },
 
     footer: {
       paddingTop: theme.spacing.md,
       marginTop: theme.spacing.md,
-      borderTop: `1px solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-      }`,
+      borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
+        }`,
     },
 
     link: {
@@ -70,15 +72,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-const data = [
-  { link: '/login', label: 'Login / Register', icon: Home2 },
-  // { link: '', label: 'Billing', icon: Receipt2 },
-  // { link: '', label: 'Security', icon: Fingerprint },
-  // { link: '', label: 'SSH Keys', icon: Key },
-  // { link: '', label: 'Databases', icon: DatabaseImport },
-  // { link: '', label: 'Authentication', icon: TwoFA },
-  // { link: '', label: 'Other Settings', icon: Settings },
-];
 
 export default function AppShell() {
   const { user, logOut } = useUser();
@@ -86,10 +79,37 @@ export default function AppShell() {
   const { classes, cx } = useStyles();
   const [active, setActive] = useState('Billing');
 
+  let data = [];
+
+  user ? data = [
+
+    { link: '/', label: 'Home', icon: Home2 },
+    { link: '/user-page', label: 'User Page', icon: UserCircle },
+    { link: '/add-portfolio-card', label: 'Add Portfolio Card', icon: DatabaseImport }
+  ]
+    :
+    data = [
+      { link: '/login', label: 'Login / Register', icon: UserCircle },
+      // { link: '', label: 'SSH Keys', icon: Key },
+      // { link: '', label: 'Authentication', icon: TwoFA },
+      // { link: '', label: 'Other Settings', icon: Settings },
+    ];
+
+  const handleSignOut = () => {
+    // lougout the user
+    APIaxios.get('/users/sign-out')
+      .then(() => {
+        // Remove the user data from the user context when a user logs out
+        logOut();
+        navigate('/')
+        console.log('user logged out.');
+
+      });
+  };
+
   const links = data.map((item) => (
     <a
       className={cx(classes.link, { [classes.linkActive]: item.label === active })}
-      // href={item.link}
       key={item.label}
       onClick={(event) => {
         event.preventDefault();
@@ -112,22 +132,28 @@ export default function AppShell() {
         {links}
       </Navbar.Section>
 
-      <Navbar.Section className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+      {user ? <Navbar.Section className={classes.footer}>
+        <a href="#" className={classes.link} onClick={(event) => { event.preventDefault(); navigate("/login"); }}>
           <SwitchHorizontal className={classes.linkIcon} />
           <span>Change account</span>
         </a>
 
-        <a href="#" className={classes.link} 
-        onClick={(event) => {
-          event.preventDefault()
-          logOut();
-          navigate('/')
+        <a href="#" className={classes.link}
+          onClick={(event) => {
+            event.preventDefault();
+            handleSignOut();
           }}>
           <Logout className={classes.linkIcon} />
           <span>Logout</span>
         </a>
+        <ButtonToggle />
       </Navbar.Section>
+        :
+        <Navbar.Section className={classes.footer}>
+          <ButtonToggle />
+        </Navbar.Section>
+      }
+
     </Navbar>
   );
 }

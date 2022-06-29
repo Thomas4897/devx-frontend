@@ -7,19 +7,11 @@ function Layout(props) {
   const { children } = props;
 
   return (
-    // <Grid grow style={{height: "100vh"}}>
-    //   <Grid.Col span={1}>
-    //     <AppShell />
-    //   </Grid.Col>
-    //   <Grid.Col span={5}>
-    //       {children}
-    //   </Grid.Col>
-    // </Grid>
     <Box style={{ display: "flex", flexDirection: "row", height: "100vh"}}>
       <Box style={{ }}>
       <AppShell />
       </Box>
-      <Box >
+      <Box style={{ width: "100vw", display: "flex", justifyContent: "center", alignItems: "center"}}>
       {children}
         </Box>
     </Box>

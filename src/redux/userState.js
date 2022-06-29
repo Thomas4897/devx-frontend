@@ -6,6 +6,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: null,
   reducers: {
+    register: (state, action) => action.payload.user,
     logIn: (state, action) => action.payload.user,
     logOut: () => null,
   },
@@ -18,6 +19,7 @@ export const useUser = () => {
   
   return {
     user: useSelector((state) => state.user),
+    // register: (userData) => dispatch(logIn(userData)),
     logIn: (userData) => dispatch(logIn(userData)),
     logOut: () => dispatch(logOut()),
 

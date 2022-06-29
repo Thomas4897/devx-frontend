@@ -14,11 +14,10 @@ import {
 import Layout from '../Layout';
 import { useUser } from '../../redux/userState'
 import { useNavigate } from 'react-router-dom';
-import APIaxios from '../../Axios';
 
-// const axios = require('axios').default;
+const axios = require('axios').default;
 
-export default function LoginPage2(props) {
+export default function AddPortfolioCard(props) {
   const { user, logIn } = useUser();
   const navigate = useNavigate();
   const [type, toggle] = useToggle('login', ['login', 'register']);
@@ -39,20 +38,13 @@ export default function LoginPage2(props) {
   });
 
   const onSubmitLogin = async () => {
-    APIaxios.post('/users/sign-in', {
-      credentials:
-      {
-        email: form.values.email,
-        password: form.values.password
-      }
-    })
+    axios.post('http://localhost:4000/users/sign-in', { credentials: { email: form.values.email, password: form.values.password } })
       .then((response) => {
         // Put the resulting user data in react context over the entire application
         // That it can be accessed from any component in the component tree.
-        console.log('login:', response.data)
         logIn(response.data);
         navigate("/user-page");
-        console.log('user logged in.');
+        console.log('user logged in');
       }).catch((error) => {
         console.log('Unable to log in.');
         console.log('error:', error);
@@ -60,7 +52,7 @@ export default function LoginPage2(props) {
   };
 
   const onSubmitRegister = async () => {
-    const response = APIaxios.post(`/users/create-user`, {
+    const response = axios.post(`http://localhost:4000/users/create-user`, {
       firstName: form.values.firstName,
       lastName: form.values.lastName,
       email: form.values.email,
@@ -68,26 +60,19 @@ export default function LoginPage2(props) {
     })
       .then((response) => {
         console.log('New user successfully created', response.data);
-        // toggle("login");
-        console.log('register:', response.data.payload)
-        logIn(response.data.payload);
-        navigate("/user-page");
+        toggle("login");
       });
     return response;
   };
 
   return (
     <Layout>
-      <Paper style={{ width: "400px" }} radius="md" p="xl" withBorder {...props}>
+      <Paper style={{width: "400px"}} radius="md" p="xl" withBorder {...props}>
         <Text size="lg" weight={500}>
-          Welcome to DevX, {type} with
+          Add Portfolio Card
         </Text>
         <Group>
           <div>Hello, {user ? user.firstName : "Guest"}</div>
-        </Group>
-        <Group grow mb="md" mt="md">
-          <Button radius="xl">Google</Button>
-          <Button radius="xl">Twitter</Button>
         </Group>
 
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
