@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, UserCircle } from 'tabler-icons-react';
+import { Heart, Heartbeat, HeartBroken, HeartOff, HeartPlus, UserCircle } from 'tabler-icons-react';
 import {
   Card,
   Image,
@@ -12,6 +12,8 @@ import {
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
+import APIaxios from '../Axios';
+import { useUser } from '../redux/userState';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -42,9 +44,11 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function PortfolioCard(props) {
+  const { user } = useUser();
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   const {
+    id,
     className,
     image,
     link,
@@ -55,7 +59,23 @@ export default function PortfolioCard(props) {
   } = props.exampleCard;
   const authorImage = props.image
   const linkProps = { href: link, target: '_blank', rel: 'noopener noreferrer' };
+  // console.log('props.userFavorites:', props.userFavorite)
 
+  const handleOnHeartClick = async () => {
+    APIaxios.post('/users/add-to-user-favorites', {
+        portfolioItemId: id,
+    })
+      .then((response) => {
+        // Put the resulting user data in react context over the entire application
+        // That it can be accessed from any component in the component tree.
+        // console.log('login:', response.data)
+        console.log(response.data.message);
+        props.setUpdatedFavorites(!props.updateFavorites);
+      }).catch((error) => {
+        console.log('Error could not add to favorites.');
+        console.log('error:', error);
+      });
+  }
 
   return (
     <Card style={{border: "1px solid gray", display: "flex", flexDirection: "column", height: "500px", maxWidth: "400px"}}  radius="md" className={cx(classes.card, className)} >
@@ -86,8 +106,16 @@ export default function PortfolioCard(props) {
         </Center>
 
         <Group spacing={8} mr={0}>
-          <ActionIcon className={classes.action} style={{ color: theme.colors.red[6] }}>
-            <Heart size={16} />
+          <ActionIcon 
+          className={classes.action} 
+          style={{ color: theme.colors.red[6] 
+          }}
+          onClick={() => {
+            handleOnHeartClick()
+            // console.log("Heart Click", props.exampleCard.id)
+          }}
+          >
+           {user && props.homePage ? <HeartPlus fill={props.userFavorites ? (props.userFavorites.includes(id) ? "red" : "") : ""} size={16} /> : ""}
           </ActionIcon>
           {/* <ActionIcon className={classes.action} style={{ color: theme.colors.yellow[7] }}>
             <Bookmark size={16} />

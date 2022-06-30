@@ -7,6 +7,7 @@ import {
   Home2,
   UserCircle,
   DatabaseImport,
+  Heart,
 } from 'tabler-icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../redux/userState'
@@ -85,6 +86,7 @@ export default function AppShell() {
 
     { link: '/', label: 'Home', icon: Home2 },
     { link: '/user-page', label: 'User Page', icon: UserCircle },
+    { link: '/user-favorites-page', label: 'Favorites', icon: Heart },
     { link: '/add-portfolio-card', label: 'Add Portfolio Card', icon: DatabaseImport }
   ]
     :

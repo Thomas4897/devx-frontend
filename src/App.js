@@ -10,6 +10,7 @@ import HomePage from './component/pages/HomePage';
 import AddPortfolioCard from './component/pages/AddPortfolioPage';
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { useState } from 'react';
+import UserFavoritesPage from './component/pages/UserFavoritesPage';
 
 function App() {
   const [colorScheme, setColorScheme] = useState('dark');
@@ -26,6 +27,7 @@ function App() {
             <Route path='login' element={<Login />} />
             <Route path='create-user' element={<CreateUser />} />
             <Route path='user-page' element={<UserHomePage />} />
+            <Route path='user-favorites-page' element={<UserFavoritesPage />} />
             <Route path='add-portfolio-card' element={<AddPortfolioCard />} />
           </Routes>
         </BrowserRouter >
