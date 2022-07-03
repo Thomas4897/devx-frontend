@@ -93,9 +93,6 @@ export default function AppShell() {
     data = [
       { link: '/', label: 'Home', icon: Home2 },
       { link: '/login', label: 'Login / Register', icon: UserCircle },
-      // { link: '', label: 'SSH Keys', icon: Key },
-      // { link: '', label: 'Authentication', icon: TwoFA },
-      // { link: '', label: 'Other Settings', icon: Settings },
     ];
 
   const handleSignOut = () => {

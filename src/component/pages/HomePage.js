@@ -37,7 +37,6 @@ export default function HomePage() {
         <Box pl={20}>
           <h2>DevX Community</h2>
         </Box>
-        {/* <Box style={{display: "flex", flexDirection: "column", height: "100vh"}}> */}
           <Box pb={25} className="example" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", overflow: "scroll" }}>
             {portfolioData.map((e) => {
               return (
@@ -47,7 +46,6 @@ export default function HomePage() {
               )
             })}
           </Box>
-        {/* </Box> */}
       </Box>
     </Layout>
   )

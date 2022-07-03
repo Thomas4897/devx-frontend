@@ -28,8 +28,6 @@ export default function UserFavoritesPage() {
     }, [user, updateFavorites]
     );
 
-
-
     return (
         <Layout>
             <Box style={{ display: "flex", flexDirection: "column", height: "100vh", width: "100%" }}>
@@ -39,7 +37,14 @@ export default function UserFavoritesPage() {
                 <Box pb={25} className="example" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", overflow: "scroll" }}>
                     {portfolioData.map((e) => userFavorites.includes(e.id) ?
                         <Box key={e.id} m={10} mt={40} style={{ width: "400px" }} >
-                            <PortfolioCard exampleCard={e} image={e.author.authorImage} homePage={homePage} userFavorites={userFavorites} updateFavorites={updateFavorites} setUpdatedFavorites={setUpdatedFavorites} />
+                            <PortfolioCard 
+                            exampleCard={e} 
+                            image={e.author.authorImage} 
+                            homePage={homePage} 
+                            userFavorites={userFavorites} 
+                            updateFavorites={updateFavorites} 
+                            setUpdatedFavorites={setUpdatedFavorites} 
+                            />
                         </Box>
                         : ""
                     )}

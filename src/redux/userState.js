@@ -19,7 +19,6 @@ export const useUser = () => {
   
   return {
     user: useSelector((state) => state.user),
-    // register: (userData) => dispatch(logIn(userData)),
     logIn: (userData) => dispatch(logIn(userData)),
     logOut: () => dispatch(logOut()),
 

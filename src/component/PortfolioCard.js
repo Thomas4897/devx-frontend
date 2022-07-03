@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Heartbeat, HeartBroken, HeartOff, HeartPlus, UserCircle } from 'tabler-icons-react';
+import { HeartPlus, UserCircle } from 'tabler-icons-react';
 import {
   Card,
   Image,
@@ -59,7 +59,6 @@ export default function PortfolioCard(props) {
   } = props.exampleCard;
   const authorImage = props.image
   const linkProps = { href: link, target: '_blank', rel: 'noopener noreferrer' };
-  // console.log('props.userFavorites:', props.userFavorite)
 
   const handleOnHeartClick = async () => {
     APIaxios.post('/users/add-to-user-favorites', {
@@ -68,8 +67,6 @@ export default function PortfolioCard(props) {
       .then((response) => {
         // Put the resulting user data in react context over the entire application
         // That it can be accessed from any component in the component tree.
-        // console.log('login:', response.data)
-        console.log(response.data.message);
         props.setUpdatedFavorites(!props.updateFavorites);
       }).catch((error) => {
         console.log('Error could not add to favorites.');
@@ -112,17 +109,10 @@ export default function PortfolioCard(props) {
           }}
           onClick={() => {
             handleOnHeartClick()
-            // console.log("Heart Click", props.exampleCard.id)
           }}
           >
            {user && props.homePage ? <HeartPlus fill={props.userFavorites ? (props.userFavorites.includes(id) ? "red" : "") : ""} size={16} /> : ""}
           </ActionIcon>
-          {/* <ActionIcon className={classes.action} style={{ color: theme.colors.yellow[7] }}>
-            <Bookmark size={16} />
-          </ActionIcon> */}
-          {/* <ActionIcon className={classes.action}>
-            <Share size={16} />
-          </ActionIcon> */}
         </Group>
       </Group>
     </Card>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, useToggle, upperFirst } from '@mantine/hooks';
 import {
   TextInput,
@@ -10,13 +10,12 @@ import {
   Divider,
   Checkbox,
   Anchor,
+  Box,
 } from '@mantine/core';
 import Layout from '../Layout';
 import { useUser } from '../../redux/userState'
 import { useNavigate } from 'react-router-dom';
 import APIaxios from '../../Axios';
-
-// const axios = require('axios').default;
 
 export default function LoginPage2(props) {
   const { user, logIn } = useUser();
@@ -38,6 +37,7 @@ export default function LoginPage2(props) {
       password: (val) => val.length >= 6,
     },
   });
+  const [ loginMessage, setLoginMessage ] = useState("")
 
   const onSubmitLogin = async () => {
     APIaxios.post('/users/sign-in', {
@@ -54,8 +54,10 @@ export default function LoginPage2(props) {
         logIn(response.data);
         navigate("/user-page");
         console.log('user logged in.');
+        setLoginMessage("")
       }).catch((error) => {
         console.log('Unable to log in.');
+        setLoginMessage("Incorrect Email or Password.")
         console.log('error:', error);
       });
   };
@@ -123,13 +125,11 @@ export default function LoginPage2(props) {
 
             {type === 'register' && (
               <TextInput
-                // required
                 label="Profile Image"
                 placeholder="Profile Image"
                 autoComplete='authorImage'
                 value={form.values.image}
                 onChange={(event) => form.setFieldValue('image', event.currentTarget.value)}
-              // error={form.errors.email && 'Invalid email'}
               />
             )}
 
@@ -173,6 +173,7 @@ export default function LoginPage2(props) {
             }}>{upperFirst(type)}</Button>
           </Group>
         </form>
+        {loginMessage.length > 0 ? <Box mt={20} style={{color:"red", textAlign: "center", fontSize: "12px"}}>{loginMessage}</Box> : ""}
       </Paper>
     </Layout>
   );

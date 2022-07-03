@@ -1,7 +1,7 @@
 import { Box } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import APIaxios from '../../Axios'
-import { useUser } from '../../redux/userState'
+import { AsyncLogin, useUser } from '../../redux/userState'
 import Layout from '../Layout'
 import PortfolioCard from '../PortfolioCard'
 
@@ -13,14 +13,18 @@ export default function UserHomePage() {
 
   useEffect(
     () => {
-      APIaxios.post('/portfolioItems/get-user-portfolio-items', { userId: user.id })
+      APIaxios.post('/portfolioItems/get-user-portfolio-items', 
+      // { userId: user.id }
+      )
         .then((response) => {
-          setPortfolioData(response.data);
-          setAuthorImage(response.data[0].author.authorImage)
+          // console.log("response.data.foundPortfolioItems:", response.data)
+          setPortfolioData(response.data.foundPortfolioItems);
+          setAuthorImage(response.data.foundPortfolioItems[0].author.authorImage);
+
         })
         .catch((error) => console.log('error: ', error));
     },
-    [],
+    [user],
   );
 
   return (

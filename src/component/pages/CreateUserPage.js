@@ -3,14 +3,6 @@ import { TextInput, PasswordInput, Tooltip, Center, Text, Button } from '@mantin
 import { InfoCircle } from 'tabler-icons-react';
 import Layout from '../Layout';
 
-// const publishProductFormInitialState = {
-//   title: '',
-//   description: '',
-//   brand: '',
-//   price: '',
-//   image: '',
-// };
-
 function TooltipFirstName() {
     const firstName = (
       <Tooltip

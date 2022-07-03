@@ -1,5 +1,4 @@
-// import { Box } from '@mui/material';
-import { Box, Grid } from '@mantine/core';
+import { Box } from '@mantine/core';
 import React from 'react';
 import AppShell from './AppShell';
 
